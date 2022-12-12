@@ -19,13 +19,13 @@ const addTodo = () => {
   if (editTodoId >= 0) {
     todoArr = todoArr.map((todo, index) => ({
       ...todo,
-      description: index === editTodoId ? inputValue : todo.description
+      description: index === editTodoId ? inputValue : todo.description,
     }));
   } else {
     todoArr.push({
       description: inputValue,
       complete: false,
-      index: todoArr.length + 1
+      index: todoArr.length + 1,
     });
   }
   input.value = '';
