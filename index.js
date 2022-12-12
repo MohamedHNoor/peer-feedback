@@ -19,13 +19,13 @@ const addTodo = () => {
   if (editTodoId >= 0) {
     todoArr = todoArr.map((todo, index) => ({
       ...todo,
-      description: index === editTodoId ? inputValue : todo.description,
+      description: index === editTodoId ? inputValue : todo.description
     }));
   } else {
     todoArr.push({
       description: inputValue,
       complete: false,
-      index: todoArr.length + 1,
+      index: todoArr.length + 1
     });
   }
   input.value = '';
@@ -48,6 +48,16 @@ const renderTodo = () => {
   });
 };
 
+const indexUpdate = () => {
+  for (let i = 0; i < todoArr.length; i += 1) {
+    todoArr[i].index = i + 1;
+  }
+};
+
+const pushToStorage = () => {
+  localStorage.setItem('TODO', JSON.stringify(todoArr));
+};
+
 const editTodo = (todoId) => {
   input.value = todoArr[todoId].description;
   editTodoId = todoId;
@@ -56,11 +66,9 @@ const editTodo = (todoId) => {
 const deleteTodo = (todoId) => {
   todoArr = todoArr.filter((todo, index) => index !== todoId);
   editTodoId = -1;
-  for (let i = 0; i < todoArr.length; i += 1) {
-    todoArr[i].index = i + 1;
-  }
   renderTodo();
-  localStorage.setItem('TODO', JSON.stringify(todoArr));
+  indexUpdate();
+  pushToStorage();
 };
 
 const checkValue = (box) => {
@@ -77,16 +85,14 @@ function checkTodo(todoId, box) {
     box.complete = true;
     box.nextElementSibling.classList.add('lineThrough');
   }
-  localStorage.setItem('TODO', JSON.stringify(todoArr));
+  pushToStorage();
 }
 
 const completeTodo = () => {
   todoArr = todoArr.filter((obj) => obj.complete !== true);
   renderTodo();
-  for (let i = 0; i < todoArr.length; i += 1) {
-    todoArr[i].index = i + 1;
-  }
-  localStorage.setItem('TODO', JSON.stringify(todoArr));
+  indexUpdate();
+  pushToStorage();
 };
 
 // form submit
@@ -94,7 +100,7 @@ form.addEventListener('submit', (Event) => {
   Event.preventDefault();
   addTodo();
   renderTodo();
-  localStorage.setItem('TODO', JSON.stringify(todoArr));
+  pushToStorage();
 });
 
 // Click event listener for all todos
